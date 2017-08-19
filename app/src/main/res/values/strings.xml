@@ -1,0 +1,42 @@
+<resources>
+    <string name="app_name">SyncMe</string>
+    <string name="phone_hint">Ingrese su número de teléfono</string>
+    <string name="title_activity_messages_area">SyncMe</string>
+
+
+    <!-- Names -->
+    <string-array name="names_array">
+        <item>Johnny Depp</item>
+        <item>Benicio Del Toro</item>
+        <item>Morgan Freeman</item>
+        <item>Christian Bale</item>
+        <item>Leonardo DiCaprio</item>
+        <item>Salman Khan</item>
+        <item> Brad Pitt</item>
+    </string-array>
+
+    <!-- Status -->
+    <string-array name="sta_array">
+        <item>love Bohemia</item>
+        <item>Available</item>
+        <item>Busy</item>
+        <item>In a meeting</item>
+        <item>At work</item>
+        <item>At gym</item>
+        <item>At the movies</item>
+    </string-array>
+
+    <!-- contact type -->
+    <string-array name="contact_array">
+        <item>12:30am</item>
+        <item>11:30am</item>
+        <item>1:00pm</item>
+        <item>12:51pm</item>
+        <item>08:12am</item>
+        <item>06:09am</item>
+        <item>13:56pm</item>
+    </string-array>
+
+    <string name="title_activity_contacts">Contacts</string>
+
+</resources>
