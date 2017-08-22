@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void register(View v){
-        Intent intent = new Intent(MainActivity.this,  ContactsActivity.class);
+        Intent intent = new Intent(MainActivity.this,  MessagesArea.class);
         //EditText editText = (EditText) findViewById(R.id.edit_message);
         //String message = editText.getText().toString();
         //intent.putExtra(EXTRA_MESSAGE, message);

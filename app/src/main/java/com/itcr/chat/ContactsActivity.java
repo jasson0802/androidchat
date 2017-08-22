@@ -1,6 +1,7 @@
 package com.itcr.chat;
 
 import android.content.ContentResolver;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -23,7 +24,7 @@ import java.util.List;
 import java.util.ListIterator;
 
 public class ContactsActivity extends AppCompatActivity implements OnItemClickListener{
-    String[] member_names;
+    ArrayList<String> member_names = new ArrayList<String>();
     ArrayList<String> phone_numbers = new ArrayList<String>();
 
     TypedArray profile_pics;
@@ -55,7 +56,7 @@ public class ContactsActivity extends AppCompatActivity implements OnItemClickLi
 
         contactItemList = new ArrayList<ContactItem>();
 
-        member_names = getResources().getStringArray(R.array.names_array);
+        //member_names = getResources().getStringArray(R.array.names_array);
 
         //profile_pics = getResources().obtainTypedArray(R.array.pics_array);
 
@@ -65,10 +66,10 @@ public class ContactsActivity extends AppCompatActivity implements OnItemClickLi
 
         times = getResources().getStringArray(R.array.contact_array);
 
-        for (int i = 0; i < phone_numbers.size(); i++) {
-            ContactItem item = new ContactItem(phone_numbers.get(i),
+        for (int i = 0; i < member_names.size(); i++) {
+            ContactItem item = new ContactItem(member_names.get(i),
                     "Picture", "",
-                    "", phone_numbers.get(i));
+                    "", member_names.get(i));
             contactItemList.add(item);
         }
 
@@ -83,9 +84,15 @@ public class ContactsActivity extends AppCompatActivity implements OnItemClickLi
     public void onItemClick(AdapterView<?> parent, View view, int position,
                             long id) {
 
-        String member_name = contactItemList.get(position).getMemberName();
-        Toast.makeText(getApplicationContext(), "" + member_name,
-                Toast.LENGTH_SHORT).show();
+        //String member_name = contactItemList.get(position).getMemberName();
+        //Toast.makeText(getApplicationContext(), "" + member_name,
+                //Toast.LENGTH_SHORT).show();
+
+        Intent intent = new Intent(ContactsActivity.this,  ChatArea.class);
+        //EditText editText = (EditText) findViewById(R.id.edit_message);
+        //String message = editText.getText().toString();
+        //intent.putExtra(EXTRA_MESSAGE, message);
+        startActivity(intent);
     }
 
     private void LoadContacts(){
@@ -110,7 +117,8 @@ public class ContactsActivity extends AppCompatActivity implements OnItemClickLi
                     while (pCur.moveToNext()) {
                         String phoneNo = pCur.getString(pCur.getColumnIndex(
                                 ContactsContract.CommonDataKinds.Phone.NUMBER));
-                        phone_numbers.add(phoneNo);
+                        member_names.add(name);
+                        //phone_numbers.add(phoneNo);
                         /*Toast.makeText(NativeContentProvider.this, "Name: " + name
                                 + ", Phone No: " + phoneNo, Toast.LENGTH_SHORT).show();*/
                     }
