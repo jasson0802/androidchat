@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "543517608075",
+    "firebase_url": "https://syncme-c6dd6.firebaseio.com",
+    "project_id": "syncme-c6dd6",
+    "storage_bucket": "syncme-c6dd6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:543517608075:android:684bbc5eb8d9b9d8",
+        "android_client_info": {
+          "package_name": "com.itcr.chat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "543517608075-usfsmia4r6o0k0s1vomhn5fqfl2t5e5d.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.itcr.chat",
+            "certificate_hash": "33c21c77deb40b6b78fdc575d775f7c7164ccc1a"
+          }
+        },
+        {
+          "client_id": "543517608075-17ve9uvd3hh503dm6adjp47i25gliv8a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBVn0ycEP3sRK6e1Thj_ROqxLedS_-oAhg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "543517608075-17ve9uvd3hh503dm6adjp47i25gliv8a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

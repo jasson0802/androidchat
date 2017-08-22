@@ -12,6 +12,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 public class ChatArea extends Activity {
     private static final String TAG = "ChatActivity";
 
@@ -69,6 +72,14 @@ public class ChatArea extends Activity {
         chatArrayAdapter.add(new ChatMessage(side, chatText.getText().toString()));
         chatText.setText("");
         side = !side;
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+        DatabaseReference myRef = database.getReference("message");
+
+        myRef.setValue("Hello, World!");
+
         return true;
+
     }
 }
