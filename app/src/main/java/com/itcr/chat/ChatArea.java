@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.DataSetObserver;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnKeyListener;
@@ -12,8 +13,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class ChatArea extends Activity {
     private static final String TAG = "ChatActivity";
@@ -25,6 +30,10 @@ public class ChatArea extends Activity {
 
     Intent intent;
     private boolean side = false;
+
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+    DatabaseReference app = database.getReference("app");
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -66,20 +75,42 @@ public class ChatArea extends Activity {
                 listView.setSelection(chatArrayAdapter.getCount() - 1);
             }
         });
+
+        app.child("messages").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String childAdded) {
+                String value = dataSnapshot.getValue(String.class);
+                chatArrayAdapter.add(new ChatMessage(side, value));
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private boolean sendChatMessage(){
         chatArrayAdapter.add(new ChatMessage(side, chatText.getText().toString()));
+        app.child("messages").push().setValue(chatText.getText().toString());
         chatText.setText("");
         side = !side;
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-
-        DatabaseReference myRef = database.getReference("message");
-
-        myRef.setValue("Hello, World!");
-
         return true;
-
     }
 }
