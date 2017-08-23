@@ -76,7 +76,7 @@ public class ChatArea extends Activity {
             }
         });
 
-        app.child("messages").addChildEventListener(new ChildEventListener() {
+        app.child("groupchat").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String childAdded) {
                 String value = dataSnapshot.getValue(String.class);
@@ -107,7 +107,7 @@ public class ChatArea extends Activity {
 
     private boolean sendChatMessage(){
         chatArrayAdapter.add(new ChatMessage(side, chatText.getText().toString()));
-        app.child("messages").push().setValue(chatText.getText().toString());
+        app.child("groupchat").push().setValue(chatText.getText().toString());
         chatText.setText("");
         side = !side;
 
