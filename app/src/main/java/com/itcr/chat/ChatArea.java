@@ -55,7 +55,7 @@ public class ChatArea extends Activity {
             receiverName = extras.getString("contactName");
             receiverNumber = receiverNumber.replaceAll("\\s+","");
             if(receiverNumber.startsWith("+")){
-                receiverNumber.replace("+506","");
+                receiverNumber = receiverNumber.replace("+506","");
             }
         }
 
