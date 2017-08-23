@@ -2,6 +2,7 @@ package com.itcr.chat;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,9 +21,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Calendar;
+
 public class ChatArea extends Activity {
     private static final String TAG = "ChatActivity";
-
     private ChatArrayAdapter chatArrayAdapter;
     private ListView listView;
     private EditText chatText;
@@ -30,6 +32,12 @@ public class ChatArea extends Activity {
 
     Intent intent;
     private boolean side = false;
+
+    String receiverNumber;
+    String receiverName;
+
+    String senderNumber;
+    SharedPreferences settings;
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
 
@@ -39,6 +47,21 @@ public class ChatArea extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent i = getIntent();
+        Bundle extras = getIntent().getExtras();
+        if(extras == null) {
+            receiverNumber = null;
+        } else {
+            receiverNumber = extras.getString("contactPhoneNumber");
+            receiverName = extras.getString("contactName");
+            receiverNumber = receiverNumber.replaceAll("\\s+","");
+            if(receiverNumber.startsWith("+")){
+                receiverNumber.replace("+506","");
+            }
+        }
+
+        settings = getSharedPreferences("phoneSettings", 0);
+        senderNumber = settings.getString("phoneNumber", "");
+
         setContentView(R.layout.activity_chat_area);
 
         buttonSend = (Button) findViewById(R.id.buttonSend);
@@ -76,11 +99,13 @@ public class ChatArea extends Activity {
             }
         });
 
-        app.child("messages").addChildEventListener(new ChildEventListener() {
+        app.child("messages").child("senderNumber").equalTo(senderNumber).addChildEventListener(new ChildEventListener() {
             @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String childAdded) {
-                String value = dataSnapshot.getValue(String.class);
-                chatArrayAdapter.add(new ChatMessage(side, value));
+            public void onChildAdded(DataSnapshot dataSnapshot, String prevMessageId) {
+                Message value = dataSnapshot.getValue(Message.class);
+                if(value.getSenderPhone() != senderNumber){
+                    chatArrayAdapter.add(new ChatMessage(true, value.getMessage()));
+                }
             }
 
             @Override
@@ -106,10 +131,20 @@ public class ChatArea extends Activity {
     }
 
     private boolean sendChatMessage(){
-        chatArrayAdapter.add(new ChatMessage(side, chatText.getText().toString()));
-        app.child("messages").push().setValue(chatText.getText().toString());
+        chatArrayAdapter.add(new ChatMessage(false, chatText.getText().toString()));
+        Message currentMessage = new Message();
+        Contact tempContact = new Contact();
+        tempContact.setPhoneNumber(receiverNumber);
+        tempContact.setContactName(receiverName);
+
+        currentMessage.setReceiverPhone(tempContact);
+        currentMessage.setSenderPhone(senderNumber);
+        currentMessage.setMessage(chatText.getText().toString());
+        currentMessage.setSavedHour(Calendar.getInstance().getTime());
+
+        app.child("messages").push().setValue(currentMessage);
         chatText.setText("");
-        side = !side;
+        //side = !side;
 
         return true;
     }

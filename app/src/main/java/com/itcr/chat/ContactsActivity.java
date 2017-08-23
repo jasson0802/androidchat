@@ -13,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.content.res.TypedArray;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
@@ -24,8 +25,11 @@ import java.util.List;
 import java.util.ListIterator;
 
 public class ContactsActivity extends AppCompatActivity implements OnItemClickListener{
-    ArrayList<String> member_names = new ArrayList<String>();
-    ArrayList<String> phone_numbers = new ArrayList<String>();
+
+    Cursor contactCursor;
+    String name, phonenumber;
+    ArrayList<Contact> contacts = new ArrayList<Contact>();
+
 
     TypedArray profile_pics;
     String[] lastMessages;
@@ -56,20 +60,16 @@ public class ContactsActivity extends AppCompatActivity implements OnItemClickLi
 
         contactItemList = new ArrayList<ContactItem>();
 
-        //member_names = getResources().getStringArray(R.array.names_array);
-
-        //profile_pics = getResources().obtainTypedArray(R.array.pics_array);
-
         LoadContacts();
 
         lastMessages = getResources().getStringArray(R.array.sta_array);
 
         times = getResources().getStringArray(R.array.contact_array);
 
-        for (int i = 0; i < member_names.size(); i++) {
-            ContactItem item = new ContactItem(member_names.get(i),
+        for (int i = 0; i < contacts.size(); i++) {
+            ContactItem item = new ContactItem(contacts.get(i).getContactName(),
                     "Picture", "",
-                    "", member_names.get(i));
+                    "", contacts.get(i).getPhoneNumber());
             contactItemList.add(item);
         }
 
@@ -90,12 +90,34 @@ public class ContactsActivity extends AppCompatActivity implements OnItemClickLi
 
         Intent intent = new Intent(ContactsActivity.this,  ChatArea.class);
         //EditText editText = (EditText) findViewById(R.id.edit_message);
-        //String message = editText.getText().toString();
-        //intent.putExtra(EXTRA_MESSAGE, message);
+        String contactPhoneNumber = contacts.get(position).getPhoneNumber();
+        String contactName = contacts.get(position).getContactName();
+
+        intent.putExtra("contactPhoneNumber",contactPhoneNumber);
+        intent.putExtra("contactName",contactName);
         startActivity(intent);
     }
 
-    private void LoadContacts(){
+    public void LoadContacts(){
+        contactCursor = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,null, null, null);
+
+        while (contactCursor.moveToNext()) {
+
+            name = contactCursor.getString(contactCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+
+            phonenumber = contactCursor.getString(contactCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+
+            Contact tempContact = new Contact();
+            tempContact.setContactName(name);
+            tempContact.setPhoneNumber(phonenumber);
+            contacts.add(tempContact);
+        }
+
+        contactCursor.close();
+    }
+
+
+    /*private void LoadContacts(){
         ContentResolver cr = getContentResolver();
         Cursor cur = cr.query(ContactsContract.Contacts.CONTENT_URI,
                 null, null, null, null);
@@ -121,10 +143,10 @@ public class ContactsActivity extends AppCompatActivity implements OnItemClickLi
                         //phone_numbers.add(phoneNo);
                         /*Toast.makeText(NativeContentProvider.this, "Name: " + name
                                 + ", Phone No: " + phoneNo, Toast.LENGTH_SHORT).show();*/
-                    }
-                    pCur.close();
-                }
-            }
-        }
-    }
+                   // }
+                    //pCur.close();
+              //  }
+           // }
+       // }
+   // }*/
 }

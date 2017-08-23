@@ -61,7 +61,6 @@ public class ContactAdapter extends BaseAdapter {
 
         LayoutInflater mInflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
 
-
         if (convertView == null) {
 
             convertView = mInflater.inflate(R.layout.message_item, null);

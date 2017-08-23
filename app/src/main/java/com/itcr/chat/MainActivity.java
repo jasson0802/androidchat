@@ -1,6 +1,7 @@
 package com.itcr.chat;
 
 import android.app.usage.UsageEvents;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
 
     DatabaseReference app = database.getReference("app");
 
+    SharedPreferences settings;
 
     private View.OnClickListener onStartClick = new View.OnClickListener(){
         @Override
@@ -33,16 +35,22 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        settings = getSharedPreferences("phoneSettings", 0);
+        String storedPhoneNumber = settings.getString("phoneNumber", "");
+
         btnRegister = (Button) findViewById(R.id.btnRegister);
         phoneNumber = (EditText) findViewById(R.id.phoneNumber);
-        //btnRegister.setOnClickListener(onStartClick);
-    }
+
+        if(!storedPhoneNumber.isEmpty() && storedPhoneNumber != ""){
+            Intent intent = new Intent(MainActivity.this,  MessagesArea.class);
+            startActivity(intent);
+        }
+   }
 
     public void register(View v){
         Intent intent = new Intent(MainActivity.this,  MessagesArea.class);
@@ -51,6 +59,10 @@ public class MainActivity extends AppCompatActivity {
         //intent.putExtra(EXTRA_MESSAGE, message);
 
         String phoneNo = phoneNumber.getText().toString();
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString("phoneNumber", phoneNo);
+
+        editor.commit();
         app.child("users").push().setValue(phoneNo);
 
         startActivity(intent);
