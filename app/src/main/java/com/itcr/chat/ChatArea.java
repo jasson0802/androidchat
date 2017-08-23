@@ -99,18 +99,21 @@ public class ChatArea extends Activity {
             }
         });
 
-        app.child("messages").child("senderNumber").equalTo(senderNumber).addChildEventListener(new ChildEventListener() {
+        app.child("messages").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String prevMessageId) {
                 Message value = dataSnapshot.getValue(Message.class);
-                if(value.getSenderPhone() != senderNumber){
+                if(value.getSenderPhone() != senderNumber && value.getReceiverPhone().getPhoneNumber() == senderNumber){
                     chatArrayAdapter.add(new ChatMessage(true, value.getMessage()));
                 }
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
+                Message value = dataSnapshot.getValue(Message.class);
+                if(value.getSenderPhone() != senderNumber && value.getReceiverPhone().getPhoneNumber() == senderNumber){
+                    chatArrayAdapter.add(new ChatMessage(true, value.getMessage()));
+                }
             }
 
             @Override
