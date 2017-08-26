@@ -39,7 +39,6 @@ public class MessagesArea extends AppCompatActivity implements OnItemClickListen
 
     DatabaseReference app = database.getReference("app");
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,14 +84,12 @@ public class MessagesArea extends AppCompatActivity implements OnItemClickListen
         //profile_pics.recycle();
         messageListView.setOnItemClickListener(this);
 
-        app.child("messages").child("senderNumber").equalTo(senderNumber).addChildEventListener(new ChildEventListener() {
+        app.child("messages").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String prevMessageId) {
                 Message value = dataSnapshot.getValue(Message.class);
-                if(value.getSenderPhone() != senderNumber){
-                    messageItemList.add(new MessageItem(value.getReceiverPhone().getContactName(), "",
-                            value.getMessage(),
-                            value.getSavedHour().toString()));
+                if(value.getReceiverPhone().getPhoneNumber().equals(senderNumber)){
+                    //chatArrayAdapter.add(new ChatMessage(true, value.getMessage()));
                 }
             }
 
@@ -116,8 +113,6 @@ public class MessagesArea extends AppCompatActivity implements OnItemClickListen
 
             }
         });
-
-
     }
 
     @Override

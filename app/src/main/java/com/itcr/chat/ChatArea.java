@@ -103,8 +103,16 @@ public class ChatArea extends Activity {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String prevMessageId) {
                 Message value = dataSnapshot.getValue(Message.class);
-                if(value.getSenderPhone() != senderNumber && value.getReceiverPhone().getPhoneNumber() == senderNumber){
+                if(value.getSenderPhone().equals(receiverNumber)  && value.getReceiverPhone().getPhoneNumber().equals(senderNumber)){
                     chatArrayAdapter.add(new ChatMessage(true, value.getMessage()));
+                }
+
+                else {
+                    boolean isCustomerSender = value.getSenderPhone().equals(senderNumber);
+                    boolean isContactReceiver =  value.getReceiverPhone().getPhoneNumber().equals(receiverNumber);
+                    if(isCustomerSender && isContactReceiver){
+                        chatArrayAdapter.add(new ChatMessage(false, value.getMessage()));
+                    }
                 }
             }
 
@@ -134,7 +142,7 @@ public class ChatArea extends Activity {
     }
 
     private boolean sendChatMessage(){
-        chatArrayAdapter.add(new ChatMessage(false, chatText.getText().toString()));
+        //chatArrayAdapter.add(new ChatMessage(false, chatText.getText().toString()));
         Message currentMessage = new Message();
         Contact tempContact = new Contact();
         tempContact.setPhoneNumber(receiverNumber);

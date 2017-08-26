@@ -73,7 +73,7 @@ public class ContactsActivity extends AppCompatActivity implements OnItemClickLi
             contactItemList.add(item);
         }
 
-        contactListView = (ListView) findViewById(R.id.messageList);
+        contactListView = (ListView) findViewById(R.id.contactList);
         ContactAdapter adapter = new ContactAdapter(this, contactItemList);
         contactListView.setAdapter(adapter);
         //profile_pics.recycle();

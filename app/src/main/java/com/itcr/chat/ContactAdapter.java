@@ -59,11 +59,11 @@ public class ContactAdapter extends BaseAdapter {
         // TODO Auto-generated method stub
         ViewHolder holder = null;
 
-        LayoutInflater mInflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-
         if (convertView == null) {
-
+            LayoutInflater mInflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
             convertView = mInflater.inflate(R.layout.message_item, null);
+        }
+
             holder = new ViewHolder();
 
             holder.member_name = (TextView) convertView
@@ -82,9 +82,6 @@ public class ContactAdapter extends BaseAdapter {
             holder.time.setText(row_pos.getLastMessageTime());
 
             convertView.setTag(holder);
-        } else {
-            holder = (ViewHolder) convertView.getTag();
-        }
 
         return convertView;
     }
