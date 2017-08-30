@@ -38,10 +38,6 @@ public class ContactsActivity extends AppCompatActivity implements OnItemClickLi
     List<ContactItem> contactItemList;
     ListView contactListView;
 
-    private String GetPhoneNumber(){
-        return "A";
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

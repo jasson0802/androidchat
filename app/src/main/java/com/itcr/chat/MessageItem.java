@@ -10,13 +10,24 @@ public class MessageItem {
     private String LastMessage;
     private String LastMessageTime;
 
-    public MessageItem(String member_name, String profile_pic_id, String status,
-                   String contactType) {
+    public String getPhoneNumber() {
+        return PhoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        PhoneNumber = phoneNumber;
+    }
+
+    private String PhoneNumber;
+
+    public MessageItem(String member_name, String profile_pic_id, String last_message,
+                   String last_message_time, String phone_number) {
 
         this.MemberName = member_name;
         this.ProfilePicUrl = profile_pic_id;
-        this.LastMessage = status;
-        this.LastMessageTime = contactType;
+        this.LastMessage = last_message;
+        this.LastMessageTime = last_message_time;
+        this.PhoneNumber = phone_number;
     }
 
     public String getMemberName() {
